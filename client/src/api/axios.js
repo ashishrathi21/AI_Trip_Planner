@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://ai-trip-planner-3-5mvo.onrender.com/api/v1",
+  baseURL: "https://ai-trip-planner-4-mbkk.onrender.com/api/v1",
   withCredentials: true,
 });
 
