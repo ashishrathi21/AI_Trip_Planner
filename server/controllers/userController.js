@@ -32,10 +32,17 @@ export const Register = async (req, res) => {
         });
 
         const token = jwt.sign(
-          { id: newUser._id }, 
+          { id: newUser._id },
           process.env.JWT_SECRET || "your_secret_key",
           { expiresIn: "7d" }
         );
+
+        res.cookie("token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
 
         const userWithoutPassword = newUser.toObject();
         delete userWithoutPassword.password;
@@ -86,8 +93,10 @@ export const Login = async (req, res) => {
 
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", 
+        secure: true,
         sameSite: "none",
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
       });
 
       const userWithoutPassword = user.toObject();
@@ -97,7 +106,7 @@ export const Login = async (req, res) => {
         success: true,
         message: "User logged in successfully",
         user: userWithoutPassword,
-        token: token, 
+        token: token,
       });
     });
   } catch (error) {
@@ -108,7 +117,9 @@ export const Login = async (req, res) => {
 export const Logout = (req, res) => {
   try {
     res.clearCookie("token", {
-      expires: new Date(Date.now()),
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
     });
     return res.status(200).json({
       success: true,

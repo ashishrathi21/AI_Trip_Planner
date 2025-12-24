@@ -27,14 +27,6 @@ app.use(
   })
 );
 
-res.cookie("token", token, {
-  httpOnly: true,
-  secure: true,      
-  sameSite: "none",  
-  maxAge: 24 * 60 * 60 * 1000, 
-});
-
-
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is Live and Running! 🚀" });
