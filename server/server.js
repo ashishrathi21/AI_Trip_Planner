@@ -26,6 +26,10 @@ app.use(
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/trips", tripRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Server is running successfully! 🚀");
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT);
