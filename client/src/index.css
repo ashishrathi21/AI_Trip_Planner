@@ -1,0 +1,65 @@
+@import url("https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Cursive:wght@400..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Outfit:wght@100..900&family=Roboto:wght@500&family=Saira:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Nunito", sans-serif;
+  --breakpoint--3xl: 1920px;
+  --color-primary: #ff9324;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-display);
+  }
+  body {
+    background-color: #fcfbfc;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Container resets */
+  .print-container {
+    width: 100% !important;
+    background: white !important;
+    padding: 0 !important;
+  }
+
+  /* Hero aur Stats ko ek sath rakhne ke liye */
+  header, .stats-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 20px !important;
+  }
+
+
+  /* Har Day Card ko clean break dene ke liye */
+  .day-card-container {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    display: block !important;
+    padding-top: 20px !important;
+    border-top: 1px solid #f0f0f0; /* Print mein separation ke liye */
+    margin-bottom: 30px !important;
+  }
+
+  /* Text aur colors clarity ke liye */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Sticky effects print mein hatao warna overlapping ho sakti hai */
+  .sticky {
+    position: relative !important;
+    top: 0 !important;
+  }
+}
