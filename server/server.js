@@ -14,22 +14,25 @@ dataBaseConnection();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: process.env.CLIENT_URL || "http://localhost:5173", 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Server is Live and Running! 🚀" });
+});
+
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/trips", tripRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Server is running successfully! 🚀");
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
 });
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT);
