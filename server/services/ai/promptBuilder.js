@@ -1,22 +1,31 @@
 export const buildTripPrompt = ({
+  source,
   destination,
   days,
   budget,
   interests,
   travelstyle,
   travelersType,
+  travelMode,
 }) => {
   return `
     You are an expert AI Travel Planner. 
-    Generate a highly personalized ${days}-day itinerary for ${destination}.
+    Generate a highly personalized ${days}-day itinerary from ${source} to ${destination}.
 
     TRAVELER CONTEXT:
     - Group Type: ${travelersType} (Crucial: Tailor all activities for this group type)
-    - Budget: ₹${budget} (Total budget)
+    - Total Budget: ₹${budget} (IMPORTANT: All expenses including transport, food, and stay must fit within this total)
     - Travel Pace: ${travelstyle}
     - Primary Interests: ${interests.join(", ")}
+    - Mode of Transport: ${travelMode} (From ${source} to ${destination})
 
-   IMAGE KEYWORD RULES:
+    TRANSPORT & LOGISTICS RULES:
+    - Calculate approximate travel duration from ${source} to ${destination} based on ${travelMode}.
+    - If ${travelMode} is "Car": Include estimated Fuel + Toll costs.
+    - If ${travelMode} is "Bus" or "Train" or "Plane": Include estimated ticket prices for ${travelersType}.
+    - Deduct these transport costs from the total ₹${budget} before suggesting food and stay.
+
+    IMAGE KEYWORD RULES:
     - For each day, provide a "imageKeyword" which is a VERY SPECIFIC landmark or place name.
     - Format: "${destination} [Exact Place Name] landmark scenic view"
     - Example for Paris: "Paris Eiffel Tower Trocadero Garden view"
@@ -33,6 +42,10 @@ export const buildTripPrompt = ({
     JSON STRUCTURE:
     {
       "destination": "${destination}",
+      "source": "${source}",
+      "travelMode": "${travelMode}",
+      "estimatedTravelTime": "Duration in hours/days from source to destination via ${travelMode}",
+      "transportCostBreakdown": "Briefly mention ticket or fuel/toll estimate",
       "mainImageKeyword": "Detailed scenic keyword for ${destination}",
       "totalDays": ${days},
       "travelersType": "${travelersType}",
@@ -42,8 +55,8 @@ export const buildTripPrompt = ({
           "morning": "Detailed specific activity for morning",
           "afternoon": "Detailed specific activity for afternoon",
           "evening": "Detailed specific activity for evening",
-          "estimatedCost": "Approx cost in INR for this day"
-          "imageKeyword": "Detailed specific landmark name",
+          "estimatedCost": "Approx cost in INR for this day (Food + Entry fees + local transport)",
+          "imageKeyword": "Detailed specific landmark name"
         }
       ]
     }

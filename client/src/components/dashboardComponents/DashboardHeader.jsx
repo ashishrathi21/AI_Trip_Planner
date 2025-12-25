@@ -24,9 +24,11 @@ const DashboardHeader = ({ user }) => {
               {user?.name || "Traveler"}
             </p>
           </div>
-          <Link to="/app/profile"><div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center font-bold shadow-xl group-hover:bg-blue-600 transition-colors duration-300">
-            {user?.name?.charAt(0) || "U"}
-          </div></Link>
+          <Link to="/app/profile">
+            <div className="w-10 h-10 rounded-xl bg-gray-900 text-white flex items-center justify-center font-bold shadow-xl group-hover:bg-blue-600 transition-colors duration-300">
+              {user?.name?.charAt(0) || "U"}
+            </div>
+          </Link>
         </div>
       </div>
     </header>

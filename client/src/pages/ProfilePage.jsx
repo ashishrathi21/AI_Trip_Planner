@@ -2,9 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser, updateProfileAPI } from "../api/auth.api";
 import { useAuth } from "../context/AuthContext";
-import { IoArrowBack, IoLogOutOutline, IoPersonOutline, IoColorWandOutline } from "react-icons/io5";
+import {
+  IoArrowBack,
+  IoLogOutOutline,
+  IoPersonOutline,
+  IoColorWandOutline,
+} from "react-icons/io5";
 
-const ALL_PREFERENCES = ["Beaches", "Food", "Culture", "Nature", "Adventure", "Shopping", "Nightlife"];
+const ALL_PREFERENCES = [
+  "Beaches",
+  "Food",
+  "Culture",
+  "Nature",
+  "Adventure",
+  "Shopping",
+  "Nightlife",
+];
 
 const ProfilePage = () => {
   const { logout, setUser: setGlobalUser } = useAuth();
@@ -65,51 +78,54 @@ const ProfilePage = () => {
     }));
   };
 
-  if (!user) return (
-    <div className="min-h-screen flex items-center justify-center bg-[#fcfcfd]">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-        <p className="font-bold text-gray-400 uppercase tracking-widest text-xs">Loading Profile...</p>
+  if (!user)
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#fcfcfd]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+          <p className="font-bold text-gray-400 uppercase tracking-widest text-xs">
+            Loading Profile...
+          </p>
+        </div>
       </div>
-    </div>
-  );
+    );
 
   return (
     <div className="min-h-screen bg-[#fcfcfd] px-4 py-10 sm:py-14">
       <div className="max-w-4xl mx-auto space-y-8">
-        
-        {/* Navigation */}
         <div className="flex items-center justify-between">
           <Link to="/app/dashboard">
             <button className="flex items-center gap-2 text-gray-500 cursor-pointer hover:text-blue-600 font-bold text-xs uppercase tracking-widest transition-colors group">
-              <IoArrowBack className="group-hover:-translate-x-1 transition-transform"/> Back to Dashboard
+              <IoArrowBack className="group-hover:-translate-x-1 transition-transform" />{" "}
+              Back to Dashboard
             </button>
           </Link>
         </div>
 
-        {/* PROFILE HEADER CARD */}
         <section className="bg-white rounded-[2.5rem] shadow-xl shadow-blue-50/50 border border-gray-100 p-6 sm:p-10 flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-full blur-3xl opacity-50 -mr-16 -mt-16"></div>
-          
+
           <div className="shrink-0 relative">
             <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-[2rem] bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex items-center justify-center text-4xl font-black shadow-2xl shadow-blue-200">
               {user?.name?.charAt(0) || "U"}
             </div>
-            
           </div>
 
           <div className="flex-1 w-full space-y-6 relative z-10">
             {!isEdit ? (
               <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">
-                   Member Account
+                  Member Account
                 </div>
                 <h1 className="text-3xl sm:text-4xl font-black text-gray-900 tracking-tighter">
                   {user?.name}
                 </h1>
                 <p className="text-gray-400 font-medium">{user?.email}</p>
                 <p className="text-gray-600 leading-relaxed max-w-md italic">
-                  "{user?.bio || "No bio added yet. Tell us about your travel soul..."}"
+                  "
+                  {user?.bio ||
+                    "No bio added yet. Tell us about your travel soul..."}
+                  "
                 </p>
                 <div className="pt-2">
                   <span className="px-4 py-2 rounded-xl bg-gray-900 text-white text-[10px] font-black uppercase tracking-[0.2em]">
@@ -120,7 +136,9 @@ const ProfilePage = () => {
             ) : (
               <div className="grid grid-cols-1 gap-5">
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+                    Full Name
+                  </label>
                   <input
                     type="text"
                     value={user.name}
@@ -130,7 +148,9 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Traveler Bio</label>
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+                    Traveler Bio
+                  </label>
                   <textarea
                     rows="3"
                     value={user.bio}
@@ -140,10 +160,14 @@ const ProfilePage = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Travel Pace</label>
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">
+                    Travel Pace
+                  </label>
                   <select
                     value={user.travelStyle}
-                    onChange={(e) => setUser({ ...user, travelStyle: e.target.value })}
+                    onChange={(e) =>
+                      setUser({ ...user, travelStyle: e.target.value })
+                    }
                     className="w-full rounded-2xl border border-gray-100 bg-gray-50 px-5 py-3 focus:ring-4 focus:ring-blue-50 outline-none focus:border-blue-200 transition-all font-medium appearance-none cursor-pointer"
                   >
                     <option>Relaxed</option>
@@ -170,12 +194,13 @@ const ProfilePage = () => {
           </div>
         </section>
 
-        {/* PREFERENCES SECTION */}
         <section className="bg-white rounded-[2.5rem] shadow-xl shadow-blue-50/50 border border-gray-100 p-6 sm:p-10">
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-3">
               <IoPersonOutline className="text-blue-600 text-xl" />
-              <h2 className="text-xl font-bold text-gray-900 tracking-tight">Travel Interests</h2>
+              <h2 className="text-xl font-bold text-gray-900 tracking-tight">
+                Travel Interests
+              </h2>
             </div>
             {isEdit && (
               <span className="text-[10px] bg-blue-600 text-white px-3 py-1 rounded-full font-black animate-pulse uppercase tracking-widest">
@@ -195,7 +220,11 @@ const ProfilePage = () => {
                       ? "bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-100"
                       : "bg-white text-gray-400 border-gray-50 hover:border-gray-200"
                   }
-                  ${isEdit ? "cursor-pointer active:scale-90" : "cursor-default opacity-80"}
+                  ${
+                    isEdit
+                      ? "cursor-pointer active:scale-90"
+                      : "cursor-default opacity-80"
+                  }
                 `}
               >
                 {pref}
@@ -204,7 +233,6 @@ const ProfilePage = () => {
           </div>
         </section>
 
-        {/* LOGOUT ACTION */}
         <div className="flex justify-center pt-4">
           <button
             onClick={handleLogout}

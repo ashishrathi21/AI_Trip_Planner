@@ -26,38 +26,33 @@
     display: none !important;
   }
 
-  /* Container resets */
   .print-container {
     width: 100% !important;
     background: white !important;
     padding: 0 !important;
   }
 
-  /* Hero aur Stats ko ek sath rakhne ke liye */
-  header, .stats-section {
+  header,
+  .stats-section {
     break-inside: avoid;
     page-break-inside: avoid;
     margin-bottom: 20px !important;
   }
 
-
-  /* Har Day Card ko clean break dene ke liye */
   .day-card-container {
     break-inside: avoid;
     page-break-inside: avoid;
     display: block !important;
     padding-top: 20px !important;
-    border-top: 1px solid #f0f0f0; /* Print mein separation ke liye */
+    border-top: 1px solid #f0f0f0;
     margin-bottom: 30px !important;
   }
 
-  /* Text aur colors clarity ke liye */
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
 
-  /* Sticky effects print mein hatao warna overlapping ho sakti hai */
   .sticky {
     position: relative !important;
     top: 0 !important;

@@ -18,15 +18,14 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: [
-      "http://localhost:5173", 
-      "https://ai-trip-planner-silk-nu.vercel.app"
+      "http://localhost:5173",
+      "https://ai-trip-planner-silk-nu.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, 
+    credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is Live and Running! 🚀" });
@@ -38,5 +37,5 @@ app.use("/api/v1/trips", tripRoutes);
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
+  console.log(`Server started on port ${PORT}`);
 });

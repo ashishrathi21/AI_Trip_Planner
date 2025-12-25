@@ -7,6 +7,11 @@ const tripSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    source: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     destination: {
       type: String,
       required: true,
@@ -15,6 +20,10 @@ const tripSchema = new mongoose.Schema(
     days: {
       type: Number,
       required: true,
+    },
+    travelMode: {
+      type: String,
+      default: "Plane",
     },
     travelersType: {
       type: String,

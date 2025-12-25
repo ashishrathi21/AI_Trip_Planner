@@ -20,6 +20,15 @@ import {
   IoWalkOutline,
 } from "react-icons/io5";
 
+import {
+  IoAirplaneOutline,
+  IoTrainOutline,
+  IoBusOutline,
+  IoCarOutline,
+  IoTimeOutline,
+  IoLocationOutline,
+} from "react-icons/io5";
+
 const TripDetailsPage = () => {
   const { id } = useParams();
   const { user, setUser } = useAuth();
@@ -47,14 +56,22 @@ const TripDetailsPage = () => {
         const response = await axios.get(
           `https://api.unsplash.com/search/photos`,
           {
-            params: { query: query, per_page: 1, orientation: "landscape",content_filter: "high" },
+            params: {
+              query: query,
+              per_page: 1,
+              orientation: "landscape",
+              content_filter: "high",
+            },
             headers: { Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}` },
           }
         );
         const imageUrl = response.data.results[0]?.urls?.regular;
-      
-      // Agar Unsplash pe result nahi mila, toh Pollinations AI (AI generated)
-      newImages[day.day] = imageUrl || `https://image.pollinations.ai/prompt/${encodeURIComponent(query)}?width=800&height=500&nologo=true`;
+
+        newImages[day.day] =
+          imageUrl ||
+          `https://image.pollinations.ai/prompt/${encodeURIComponent(
+            query
+          )}?width=800&height=500&nologo=true`;
       } catch (err) {
         console.error("Error fetching image for day", day.day, err);
         newImages[day.day] =
@@ -63,6 +80,19 @@ const TripDetailsPage = () => {
     });
     await Promise.all(promises);
     setItemImages(newImages);
+  };
+
+  const getTravelIcon = (mode) => {
+    const travelMode = mode?.toLowerCase();
+
+    if (travelMode === "plane")
+      return <IoAirplaneOutline className="text-blue-500" />;
+    if (travelMode === "train")
+      return <IoTrainOutline className="text-blue-500" />;
+    if (travelMode === "bus") return <IoBusOutline className="text-blue-500" />;
+    if (travelMode === "car") return <IoCarOutline className="text-blue-500" />;
+
+    return <IoAirplaneOutline className="text-blue-500" />;
   };
 
   useEffect(() => {
@@ -124,7 +154,6 @@ const TripDetailsPage = () => {
 
   return (
     <div className="min-h-screen bg-[#fcfcfd] pb-20">
-      {/* HEADER NAVIGATION (No Print) */}
       <nav className="no-print sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link
@@ -154,7 +183,6 @@ const TripDetailsPage = () => {
         ref={componentRef}
         className="print-container max-w-5xl mx-auto px-4 py-8 space-y-12"
       >
-        {/* HERO: CLEAN & IMPACTFUL */}
         <header className="relative h-[300px] sm:h-[450px] rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-100">
           <img
             src={`https://image.pollinations.ai/prompt/scenic%20wide%20shot%20of%20${trip?.destination}%20travel?width=1280&height=720&nologo=true`}
@@ -164,20 +192,28 @@ const TripDetailsPage = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent flex flex-col justify-end p-6 sm:p-12">
             <div className="space-y-2">
               <span className="bg-blue-600 text-white text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-[0.2em]">
-                Personalized Itinerary
+                {trip?.source || "Your"} to {trip?.destination}
               </span>
               <h1 className="text-4xl sm:text-7xl font-black text-white tracking-tighter uppercase">
                 {trip?.destination}
               </h1>
-              <p className="text-white/70 text-sm sm:text-xl font-medium tracking-wide">
-                {trip?.days} Days in the heart of culture and adventure
-              </p>
+
+              <div className="flex items-center gap-4 text-white/80 text-xs sm:text-lg font-medium">
+                <span className="flex items-center gap-2">
+                  {getTravelIcon(trip?.travelMode)}{" "}
+                  {trip?.travelMode || "Flight"}
+                </span>
+                {trip?.aiResponse?.estimatedTravelTime && (
+                  <span className="flex items-center gap-2">
+                    <IoTimeOutline /> {trip?.aiResponse?.estimatedTravelTime}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </header>
 
-        {/* QUICK STATS CARDS */}
-        <section className="stats-section grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <section className="stats-section grid grid-cols-2 lg:grid-cols-5 gap-4">
           {[
             {
               label: "Budget",
@@ -188,6 +224,11 @@ const TripDetailsPage = () => {
               label: "Duration",
               val: `${trip?.days} Days`,
               icon: <IoCalendarOutline className="text-indigo-500" />,
+            },
+            {
+              label: "Mode",
+              val: trip?.travelMode || "Plane",
+              icon: getTravelIcon(trip?.travelMode),
             },
             {
               label: "Travelers",
@@ -211,14 +252,30 @@ const TripDetailsPage = () => {
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                   {stat.label}
                 </p>
-                <p className="font-bold text-gray-900 capitalize">{stat.val}</p>
+                <p className="font-bold text-gray-900 capitalize text-sm">
+                  {stat.val}
+                </p>
               </div>
             </div>
           ))}
         </section>
 
-        {/* ROADMAP SECTION (The Redesigned Timeline from before) */}
-        {/* ROADMAP SECTION */}
+        {trip?.aiResponse?.transportCostBreakdown && (
+          <div className="bg-blue-50 border border-blue-100 p-4 rounded-3xl flex items-center gap-4">
+            <div className="bg-white p-2 rounded-xl shadow-sm">
+              <IoLocationOutline className="text-blue-600 text-xl" />
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest">
+                Transport Insight
+              </p>
+              <p className="text-sm font-bold text-blue-900">
+                {trip?.aiResponse?.transportCostBreakdown}
+              </p>
+            </div>
+          </div>
+        )}
+
         <section className=" space-y-16 pt-10">
           <div className="flex flex-col gap-2 px-2">
             <div className="flex items-center gap-3">
@@ -238,10 +295,8 @@ const TripDetailsPage = () => {
                 key={index}
                 className="flex flex-col lg:flex-row gap-8 lg:gap-16 day-card-container"
               >
-                {/* LEFT: IMAGE & DAY NUMBER */}
                 <div className="lg:w-5/12">
                   <div className="sticky top-24 space-y-4">
-                    {/* Day Header - Better Visibility */}
                     <div className="flex items-end justify-between lg:justify-start lg:gap-6 mb-2">
                       <div className="flex items-baseline gap-2">
                         <span className="text-sm font-black text-blue-600 uppercase tracking-tighter">
@@ -252,7 +307,6 @@ const TripDetailsPage = () => {
                         </h3>
                       </div>
 
-                      {/* Estimated Cost - Font and Visibility increased */}
                       <div className="bg-green-100 border border-green-200 px-4 py-1.5 rounded-xl">
                         <p className="text-[10px] font-black text-green-700 uppercase tracking-widest leading-none mb-1">
                           Estimated Cost
@@ -263,7 +317,6 @@ const TripDetailsPage = () => {
                       </div>
                     </div>
 
-                    {/* Image Container - Hover scope limited to image only */}
                     <div className="relative aspect-[16/10] overflow-hidden rounded-[2rem] shadow-xl bg-gray-100">
                       <img
                         src={
@@ -278,9 +331,7 @@ const TripDetailsPage = () => {
                   </div>
                 </div>
 
-                {/* RIGHT: TIMELINE CONTENT */}
                 <div className="lg:w-7/12 border-l-2 border-gray-100 pl-8 ml-2 relative space-y-10 py-4">
-                  {/* Morning Row */}
                   <div className="relative group/item">
                     <div className="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-white border-4 border-orange-400 group-hover/item:scale-125 transition-transform"></div>
                     <div className="space-y-1">
@@ -293,7 +344,6 @@ const TripDetailsPage = () => {
                     </div>
                   </div>
 
-                  {/* Afternoon Row */}
                   <div className="relative group/item">
                     <div className="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-white border-4 border-blue-500 group-hover/item:scale-125 transition-transform"></div>
                     <div className="space-y-1">
@@ -306,7 +356,6 @@ const TripDetailsPage = () => {
                     </div>
                   </div>
 
-                  {/* Evening Row */}
                   <div className="relative group/item">
                     <div className="absolute -left-[41px] top-1 w-4 h-4 rounded-full bg-white border-4 border-indigo-600 group-hover/item:scale-125 transition-transform"></div>
                     <div className="space-y-1">
@@ -324,7 +373,6 @@ const TripDetailsPage = () => {
           </div>
         </section>
 
-        {/* BOTTOM ACTION BAR (No Print) */}
         <section className="no-print bg-gray-900 rounded-[2.5rem] p-6 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl">
           <div className="text-center sm:text-left">
             <h3 className="text-xl font-bold text-white">Love this plan?</h3>
