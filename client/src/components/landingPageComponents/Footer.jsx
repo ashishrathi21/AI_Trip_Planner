@@ -54,7 +54,7 @@ const Footer = () => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-gray-50 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-            © 2025 AI Trip Planner — All Rights Reserved
+            © {new Date().getFullYear()} AI Trip Planner — All Rights Reserved
           </p>
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest hover:text-blue-600 transition-colors">
             <a href="https://ashish-rathi-portfolio.vercel.app/" target="_blank" rel="noopener noreferrer">By Ashish Rathi</a>
