@@ -1,6 +1,6 @@
 # 🤖 AI Trip Planner - Your Personal Travel Roadmap
 
-An AI-powered full-stack application that generates a personalized day-wise itinerary for your next trip based on budget, destination, and duration.
+An AI-powered full-stack application that generates a personalized day-wise itinerary for your next trip based on budget, destination, and duration. Now updated with smart transport logistics and source-to-destination routing.
 
 ## 🚀 Live Demo
 **Frontend:** https://ai-trip-planner-silk-nu.vercel.app/
@@ -9,7 +9,11 @@ An AI-powered full-stack application that generates a personalized day-wise itin
 
 ## ✨ Features
 - **AI-Generated Plans:** Integration with **Google Gemini AI** for smart travel suggestions.
-- **Dynamic Visuals:** **Unsplash API** used to fetch relevant landmark images.
+- **Source-to-Destination Logic:** Generates routes from a specific starting point to the destination.
+- **Dynamic Transport Selection:** Choose between Plane, Train, Bus, or Car with estimated travel duration.
+- **Budget-Aware Planning:** AI calculates Fuel, Tolls, or Ticket prices within your total budget.
+- **Travel Essentials Highlights:** Dedicated UI cards for **Stay Type** and **Food Preferences**.
+- **Dynamic Visuals:** **Unsplash API** and **Pollinations AI** used to fetch relevant landmark images.
 - **Secure Auth:** JWT-based authentication with **HTTP-Only Cookies** for maximum security.
 - **Export to PDF:** Download your itinerary with one click using `react-to-print`.
 - **Responsive UI:** Modern, clean, and mobile-friendly design with **Tailwind CSS**.
